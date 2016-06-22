@@ -123,7 +123,7 @@ robj *createEmbeddedStringObjectPM(const char *ptr, size_t len) {
     o = pmemobj_direct(oid);
     struct sdshdr8 *sh = (void*)(o+1);
 
-    o->type = OBJ_STRING;
+    PM_EQU((o->type), (OBJ_STRING));
     o->encoding = OBJ_ENCODING_EMBSTR;
     o->ptr = sh+1;
     o->refcount = 1;
