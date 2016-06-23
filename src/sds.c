@@ -172,41 +172,41 @@ sds sdsnewlenPM(const void *init, size_t initlen) {
     fp = ((unsigned char*)s)-1;
     switch(type) {
         case SDS_TYPE_5: {
-            *fp = type | (initlen << SDS_TYPE_BITS);
+            PM_EQU((*fp), (type | (initlen << SDS_TYPE_BITS)));
             break;
         }
         case SDS_TYPE_8: {
             SDS_HDR_VAR(8,s);
-            sh->len = initlen;
-            sh->alloc = initlen;
-            *fp = type;
+            PM_EQU((sh->len), (initlen));
+            PM_EQU((sh->alloc), (initlen));
+            PM_EQU((*fp), (type));
             break;
         }
         case SDS_TYPE_16: {
             SDS_HDR_VAR(16,s);
-            sh->len = initlen;
-            sh->alloc = initlen;
-            *fp = type;
+            PM_EQU((sh->len), (initlen));
+            PM_EQU((sh->alloc), (initlen));
+            PM_EQU((*fp), (type));
             break;
         }
         case SDS_TYPE_32: {
             SDS_HDR_VAR(32,s);
-            sh->len = initlen;
-            sh->alloc = initlen;
-            *fp = type;
+            PM_EQU((sh->len), (initlen));
+            PM_EQU((sh->alloc), (initlen));
+            PM_EQU((*fp), (type));
             break;
         }
         case SDS_TYPE_64: {
             SDS_HDR_VAR(64,s);
-            sh->len = initlen;
-            sh->alloc = initlen;
-            *fp = type;
+            PM_EQU((sh->len), (initlen));
+            PM_EQU((sh->alloc), (initlen));
+            PM_EQU((*fp), (type));
             break;
         }
     }
     if (initlen && init)
-        memcpy(s, init, initlen);
-    s[initlen] = '\0';
+        PM_MEMCPY((s), (init), (initlen));
+    PM_EQU((s[initlen]), ('\0'));
     return s;
 }
 #endif

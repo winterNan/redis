@@ -43,13 +43,14 @@
 #include <sys/time.h>
 #include <ctype.h>
 
+#ifdef USE_NVML
+#include "server.h"
+#endif
+
 #include "dict.h"
 #include "zmalloc.h"
 #include "redisassert.h"
 
-#ifdef USE_NVML
-#include "server.h"
-#endif
 
 /* Using dictEnableResize() / dictDisableResize() we make possible to
  * enable/disable resizing of the hash table as needed. This is very important
@@ -268,7 +269,7 @@ int dictRehash(dict *d, int n) {
             nextde = de->next;
             /* Get the index in the new hash table */
             h = dictHashKey(d, de->key) & d->ht[1].sizemask;
-            de->next = d->ht[1].table[h];
+            PM_EQU((de->next), (d->ht[1].table[h]));
             d->ht[1].table[h] = de;
             d->ht[0].used--;
             d->ht[1].used++;
@@ -426,9 +427,9 @@ dictEntry *dictAddRawPM(dict *d, void *key)
     oid = pmemobj_tx_zalloc(sizeof(*entry),PM_TYPE_ENTRY);
     entry = pmemobj_direct(oid);
 
-    entry->next = ht->table[index];
-    ht->table[index] = entry;
-    ht->used++;
+    PM_EQU((entry->next), (ht->table[index]));
+    (ht->table[index]) = (entry);
+    (ht->used) = (ht->used + 1);
 
     /* Set the hash entry fields. */
     dictSetKey(d, entry, key);

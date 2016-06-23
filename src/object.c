@@ -123,20 +123,20 @@ robj *createEmbeddedStringObjectPM(const char *ptr, size_t len) {
     o = pmemobj_direct(oid);
     struct sdshdr8 *sh = (void*)(o+1);
 
-    PM_EQU((o->type), (OBJ_STRING));
-    o->encoding = OBJ_ENCODING_EMBSTR;
-    o->ptr = sh+1;
-    o->refcount = 1;
-    o->lru = LRU_CLOCK();
-
-    sh->len = len;
-    sh->alloc = len;
-    sh->flags = SDS_TYPE_8;
+    (o->type) = (OBJ_STRING);
+    (o->encoding) = (OBJ_ENCODING_EMBSTR);
+    (o->ptr) = (sh+1);
+    (o->refcount) = (1);
+    (o->lru) = (LRU_CLOCK());
+    PM_STORE((o), sizeof(robj));
+    PM_EQU((sh->len), (len));
+    PM_EQU((sh->alloc), (len));
+    PM_EQU((sh->flags), (SDS_TYPE_8));
     if (ptr) {
-        memcpy(sh->buf,ptr,len);
-        sh->buf[len] = '\0';
+        PM_MEMCPY((sh->buf),(ptr),(len));
+        PM_EQU((sh->buf[len]), ('\0'));
     } else {
-        memset(sh->buf,0,len+1);
+        PM_MEMSET((sh->buf),(0),(len+1));
     }
     return o;
 }

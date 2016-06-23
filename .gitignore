@@ -1,4 +1,5 @@
 .*.swp
+cscope.out
 *.o
 *.log
 dump.rdb
