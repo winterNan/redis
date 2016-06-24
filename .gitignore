@@ -1,4 +1,5 @@
 .*.swp
+pin/
 cscope.out
 *.o
 *.log
