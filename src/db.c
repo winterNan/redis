@@ -131,7 +131,7 @@ void dbAdd(redisDb *db, robj *key, robj *val) {
 void dbAddPM(redisDb *db, robj *key, robj *val) {
     sds copy = sdsdupPM(key->ptr);
     int retval = dictAddPM(db->dict, copy, val);
-
+    /* At this point, both key and value are non-volatile */
     serverAssertWithInfo(NULL,key,retval == C_OK);
     if (val->type == OBJ_LIST) signalListAsReady(db, key);
     if (server.cluster_enabled) slotToKeyAdd(key);

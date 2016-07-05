@@ -338,7 +338,7 @@ int dictAdd(dict *d, void *key, void *val)
 int dictAddPM(dict *d, void *key, void *val)
 {
     dictEntry *entry = dictAddRawPM(d,key);
-
+    /* At this point, both key and values are in PMEM */
     if (!entry) return DICT_ERR;
     dictSetVal(d, entry, val);
     return DICT_OK;
@@ -426,7 +426,7 @@ dictEntry *dictAddRawPM(dict *d, void *key)
 
     oid = pmemobj_tx_zalloc(sizeof(*entry),PM_TYPE_ENTRY);
     entry = pmemobj_direct(oid);
-
+    /* Resolving collision via chaining; Insertion at head */
     PM_EQU((entry->next), (ht->table[index]));
     (ht->table[index]) = (entry);
     (ht->used) = (ht->used + 1);
