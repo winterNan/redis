@@ -133,10 +133,10 @@ robj *createEmbeddedStringObjectPM(const char *ptr, size_t len) {
     PM_EQU((sh->alloc), (len));
     PM_EQU((sh->flags), (SDS_TYPE_8));
     if (ptr) {
-        PM_MEMCPY((sh->buf),(ptr),(len));
+        PM_DMEMCPY((sh->buf),(ptr),(len)); // freud : Data write ?
         PM_EQU((sh->buf[len]), ('\0'));
     } else {
-        PM_MEMSET((sh->buf),(0),(len+1));
+        PM_DMEMSET((sh->buf),(0),(len+1)); // freud : Data write ?
     }
     return o;
 }

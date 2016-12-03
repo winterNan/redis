@@ -205,7 +205,7 @@ sds sdsnewlenPM(const void *init, size_t initlen) {
         }
     }
     if (initlen && init)
-        PM_MEMCPY((s), (init), (initlen));
+        PM_DMEMCPY((s), (init), (initlen)); // freud : Data write ?
     PM_EQU((s[initlen]), ('\0'));
     return s;
 }
