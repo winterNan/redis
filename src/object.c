@@ -128,13 +128,13 @@ robj *createEmbeddedStringObjectPM(const char *ptr, size_t len) {
     (o->ptr) = (sh+1);
     (o->refcount) = (1);
     (o->lru) = (LRU_CLOCK());
-    PM_STORE((o), sizeof(robj));
-    PM_EQU((sh->len), (len));
-    PM_EQU((sh->alloc), (len));
-    PM_EQU((sh->flags), (SDS_TYPE_8));
+    PM_STORE_DW((o), sizeof(robj));
+    PM_EQU_DW((sh->len), (len));
+    PM_EQU_DW((sh->alloc), (len));
+    PM_EQU_DW((sh->flags), (SDS_TYPE_8));
     if (ptr) {
         PM_DMEMCPY((sh->buf),(ptr),(len)); // freud : Data write ?
-        PM_EQU((sh->buf[len]), ('\0'));
+        PM_EQU_DW((sh->buf[len]), ('\0'));
     } else {
         PM_DMEMSET((sh->buf),(0),(len+1)); // freud : Data write ?
     }

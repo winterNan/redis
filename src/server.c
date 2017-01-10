@@ -3752,6 +3752,9 @@ void redisAsciiArt(void) {
 static void sigShutdownHandler(int sig) {
     char *msg;
 
+    fprintf(stderr, "\n********************************************************");
+    fprintf(stderr, "\nTOTAL EPOCHS : %llu\n", get_tot_epoch_count());
+    fprintf(stderr, "********************************************************\n");
     switch (sig) {
     case SIGINT:
         msg = "Received SIGINT scheduling shutdown...";
@@ -3762,7 +3765,7 @@ static void sigShutdownHandler(int sig) {
     default:
         msg = "Received shutdown signal, scheduling shutdown...";
     };
-
+	
     /* SIGINT is often delivered via Ctrl+C in an interactive session.
      * If we receive the signal the second time, we interpret this as
      * the user really wanting to quit ASAP without waiting to persist
